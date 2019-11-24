@@ -1,8 +1,8 @@
 # &lt;w0s-tab&gt;
 
-## Sample
+## Demo
 
-- [Sample](https://saekitominaga.github.io/customelements-tab/sample.html)
+- [Demo page](https://saekitominaga.github.io/customelements-tab/demo.html)
 
 ## Attributes
 
