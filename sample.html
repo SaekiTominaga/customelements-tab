@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>&lt;w0s-input-switch&gt; Sample</title>
+<script type="module">
+import CustomElementTab from './tab.mjs';
+
+if (window.customElements !== undefined) {
+	customElements.define(
+		'w0s-tab', CustomElementTab
+	);
+} else {
+	console.info('\'Custom Elements v1\' is not supported.');
+}
+</script>
+</head>
+<body>
+<h1>&lt;w0s-tab&gt; Sample</h1>
+
+<pre><code>&lt;w0s-tab storage-key="w0s-tab"&gt;
+&lt;a href="#tabpanel1" slot="tab"&gt;tabpanel 1&lt;/a&gt;
+&lt;a href="#tabpanel2" slot="tab"&gt;tabpanel 2&lt;/a&gt;
+&lt;a href="#tabpanel3" slot="tab"&gt;tabpanel 3&lt;/a&gt;
+&lt;div slot="tabpanel" id="tabpanel1"&gt;
+Contents of tabpanel 1
+&lt;/div&gt;
+&lt;div slot="tabpanel" id="tabpanel2"&gt;
+Contents of tabpanel 2
+&lt;/div&gt;
+&lt;div slot="tabpanel" id="tabpanel3"&gt;
+Contents of tabpanel 3
+&lt;/div&gt;
+&lt;/w0s-tab&gt;</code></pre>
+
+<w0s-tab storage-key="w0s-tab">
+<a href="#tabpanel1" slot="tab">tabpanel 1</a>
+<a href="#tabpanel2" slot="tab">tabpanel 2</a>
+<a href="#tabpanel3" slot="tab">tabpanel 3</a>
+<div slot="tabpanel" id="tabpanel1">
+Contents of tabpanel 1
+</div>
+<div slot="tabpanel" id="tabpanel2">
+Contents of tabpanel 2
+</div>
+<div slot="tabpanel" id="tabpanel3">
+Contents of tabpanel 3
+</div>
+</w0s-tab>
+
+<p><small>* The styling is minimal. Appearance adjustments must be individually add in CSS. For now, just make sure that the switchover is performed if you select the string `tabpanel 1` or `tabpanel 2` or `tabpanel 3`.</small></p>
+
+</body>
+</html>
