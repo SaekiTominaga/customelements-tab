@@ -1,6 +1,6 @@
 {
-  "name": "w0s-tab",
-  "version": "1.0.0",
+  "name": "@saekitominaga/customelements-tab",
+  "version": "1.2.0",
   "description": "Implement tab functionality with Custom Elements.",
   "main": "tab.mjs",
   "scripts": {
@@ -11,6 +11,8 @@
     "url": "git+https://github.com/SaekiTominaga/customelements-tab.git"
   },
   "keywords": [
+    "web-components",
+    "custom-elements",
     "tab"
   ],
   "author": "saekitominaga",
@@ -18,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/SaekiTominaga/customelements-tab/issues"
   },
-  "homepage": "https://github.com/SaekiTominaga/customelements-tab#readme"
+  "homepage": "https://github.com/SaekiTominaga/customelements-tab#readme",
+  "publishConfig": {
+    "access": "public"
+  }
 }
