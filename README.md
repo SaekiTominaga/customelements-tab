@@ -1,5 +1,7 @@
 # &lt;w0s-tab&gt;
 
+Implement tab functionality with Custom Elements.
+
 ## Demo
 
 - [Demo page](https://saekitominaga.github.io/customelements-tab/demo.html)
