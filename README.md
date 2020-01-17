@@ -1,5 +1,7 @@
 # &lt;w0s-tab&gt;
 
+[![npm version](https://badge.fury.io/js/%40saekitominaga%2Fcustomelements-tab.svg)](https://badge.fury.io/js/%40saekitominaga%2Fcustomelements-tab)
+
 Implement tab functionality with Custom Elements.
 
 ## Demo
