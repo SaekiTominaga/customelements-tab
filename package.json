@@ -1,6 +1,6 @@
 {
   "name": "@saekitominaga/customelements-tab",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Implement tab functionality with Custom Elements.",
   "main": "tab.mjs",
   "scripts": {

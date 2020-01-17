@@ -11,7 +11,7 @@
  *   <div slot="tabpanel" id="tabpanel2">タブパネル2</div>
  * </x-tab>
  *
- * @version 1.2.0 2019-11-24 storage-key属性を必須から任意に変更
+ * @version 1.3.0 2020-01-17 CSS を adoptedStyleSheets で設定するように変更
  */
 export default class Tab extends HTMLElement {
 	constructor() {
@@ -23,25 +23,27 @@ export default class Tab extends HTMLElement {
 			console.info('Storage access blocked.');
 		}
 
-		this.attachShadow({mode: 'open'}).innerHTML = `
-			<style>
-				:host {
-					display: block;
-				}
+		const cssString = `
+			:host {
+				display: block;
+			}
 
-				.tablist slot,
-				.tablist.style-scope.w0s-tab /* for polyfill */ {
-					display: flex;
-					align-items: flex-end;
-				}
+			.tablist slot,
+			.tablist.style-scope.w0s-tab /* for polyfill */ {
+				display: flex;
+				align-items: flex-end;
+			}
 
-				.tabpanels ::slotted([aria-hidden="true"]) {
-					display: none;
-				}
-				.tabpanels.style-scope.w0s-tab > [aria-hidden="true"] /* for polyfill */ {
-					display: none;
-				}
-			</style>
+			.tabpanels ::slotted([aria-hidden="true"]) {
+				display: none;
+			}
+			.tabpanels.style-scope.w0s-tab > [aria-hidden="true"] /* for polyfill */ {
+				display: none;
+			}
+		`;
+
+		const shadow = this.attachShadow({mode: 'open'}).innerHTML;
+		shadow.innerHTML = `
 			<div id="tablist" class="tablist" role="tablist">
 				<slot id="tab-slot" name="tab"></slot>
 			</div>
@@ -49,6 +51,16 @@ export default class Tab extends HTMLElement {
 				<slot id="tabpanel-slot" name="tabpanel"></slot>
 			</div>
 		`;
+
+		if (shadow.adoptedStyleSheets !== undefined) {
+			const cssStyleSheet = new CSSStyleSheet();
+			cssStyleSheet.replace(cssString);
+
+			shadow.adoptedStyleSheets = [cssStyleSheet];
+		} else {
+			/* adoptedStyleSheets 未対応環境 */
+			shadow.innerHTML += `<style>${cssString}</style>`;
+		}
 
 		this._tablistElement = this.shadowRoot.getElementById('tablist');
 		this._tabElements = this.shadowRoot.getElementById('tab-slot').assignedNodes({flatten: true});
