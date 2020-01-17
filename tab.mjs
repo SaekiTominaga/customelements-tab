@@ -11,7 +11,7 @@
  *   <div slot="tabpanel" id="tabpanel2">タブパネル2</div>
  * </x-tab>
  *
- * @version 1.3.0 2020-01-17 CSS を adoptedStyleSheets で設定するように変更
+ * @version 1.3.1 2020-01-17 CSS を adoptedStyleSheets で設定するように変更
  */
 export default class Tab extends HTMLElement {
 	constructor() {
@@ -42,7 +42,7 @@ export default class Tab extends HTMLElement {
 			}
 		`;
 
-		const shadow = this.attachShadow({mode: 'open'}).innerHTML;
+		const shadow = this.attachShadow({mode: 'open'});
 		shadow.innerHTML = `
 			<div id="tablist" class="tablist" role="tablist">
 				<slot id="tab-slot" name="tab"></slot>
