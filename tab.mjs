@@ -11,7 +11,7 @@
  *   <div slot="tabpanel" id="tabpanel2">タブパネル2</div>
  * </x-tab>
  *
- * @version 1.3.1 2020-01-17 CSS を adoptedStyleSheets で設定するように変更
+ * @version 1.3.2 2020-01-21 CSSStyleSheet へのCSSの設定を replaceSync に変更
  */
 export default class Tab extends HTMLElement {
 	constructor() {
@@ -54,7 +54,7 @@ export default class Tab extends HTMLElement {
 
 		if (shadow.adoptedStyleSheets !== undefined) {
 			const cssStyleSheet = new CSSStyleSheet();
-			cssStyleSheet.replace(cssString);
+			cssStyleSheet.replaceSync(cssString);
 
 			shadow.adoptedStyleSheets = [cssStyleSheet];
 		} else {
