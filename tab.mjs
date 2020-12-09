@@ -1,35 +1,55 @@
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, privateMap, value) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to set private field on non-instance");
+    }
+    privateMap.set(receiver, value);
+    return value;
+};
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, privateMap) {
+    if (!privateMap.has(receiver)) {
+        throw new TypeError("attempted to get private field on non-instance");
+    }
+    return privateMap.get(receiver);
+};
+var _mySessionStorage, _tablistElement, _tabElements, _tabpanelElements, _selectedTabNo, _tabClickEventListener, _tabKeydownEventListener, _tabpanelKeydownEventListener;
 /**
- * タブ
+ * Tab
  *
  * @example
  * <x-tab
- *   tablist-label="【任意】[role=tablist] に設定するラベル文字列"
- *   storage-key="【任意】選択タブをストレージに記憶する際のキー文字列（サイト内でユニークな値を設定）">
- *   <a href="#tabpanel1" slot="tab">タブ1</a>
- *   <a href="#tabpanel2" slot="tab">タブ2</a>
- *   <div slot="tabpanel" id="tabpanel1">タブパネル1</div>
- *   <div slot="tabpanel" id="tabpanel2">タブパネル2</div>
+ *   tablist-label="[Optional] Label string to set in [role=tablist]. (set as the `aria-label` attribute value)"
+ *   storage-key="[Optional] When a tab is selected, its value is saved as the `sessionStorage`.">
+ *   <a href="#tabpanel1" slot="tab">Tab 1</a>
+ *   <a href="#tabpanel2" slot="tab">Tab 2</a>
+ *   <div slot="tabpanel" id="tabpanel1">Tab panel 1</div>
+ *   <div slot="tabpanel" id="tabpanel2">Tab panel 2</div>
  * </x-tab>
  *
- * @version 1.3.2 2020-01-21 CSSStyleSheet へのCSSの設定を replaceSync に変更
+ * @version 1.4.0
  */
 export default class Tab extends HTMLElement {
-	constructor() {
-		super();
-
-		try {
-			this._mySessionStorage = sessionStorage;
-		} catch(e) {
-			console.info('Storage access blocked.');
-		}
-
-		const cssString = `
+    constructor() {
+        super();
+        _mySessionStorage.set(this, null);
+        _tablistElement.set(this, void 0);
+        _tabElements.set(this, void 0);
+        _tabpanelElements.set(this, void 0);
+        _selectedTabNo.set(this, 0); // 何番目のタブが選択されているか
+        _tabClickEventListener.set(this, void 0);
+        _tabKeydownEventListener.set(this, void 0);
+        _tabpanelKeydownEventListener.set(this, void 0);
+        try {
+            __classPrivateFieldSet(this, _mySessionStorage, sessionStorage);
+        }
+        catch (e) {
+            console.info('Storage access blocked.');
+        }
+        const cssString = `
 			:host {
 				display: block;
 			}
 
-			.tablist slot,
-			.tablist.style-scope.w0s-tab /* for polyfill */ {
+			.tablist > slot {
 				display: flex;
 				align-items: flex-end;
 			}
@@ -37,13 +57,9 @@ export default class Tab extends HTMLElement {
 			.tabpanels ::slotted([aria-hidden="true"]) {
 				display: none;
 			}
-			.tabpanels.style-scope.w0s-tab > [aria-hidden="true"] /* for polyfill */ {
-				display: none;
-			}
 		`;
-
-		const shadow = this.attachShadow({mode: 'open'});
-		shadow.innerHTML = `
+        const shadow = this.attachShadow({ mode: 'open' });
+        shadow.innerHTML = `
 			<div id="tablist" class="tablist" role="tablist">
 				<slot id="tab-slot" name="tab"></slot>
 			</div>
@@ -51,235 +67,217 @@ export default class Tab extends HTMLElement {
 				<slot id="tabpanel-slot" name="tabpanel"></slot>
 			</div>
 		`;
-
-		if (shadow.adoptedStyleSheets !== undefined) {
-			const cssStyleSheet = new CSSStyleSheet();
-			cssStyleSheet.replaceSync(cssString);
-
-			shadow.adoptedStyleSheets = [cssStyleSheet];
-		} else {
-			/* adoptedStyleSheets 未対応環境 */
-			shadow.innerHTML += `<style>${cssString}</style>`;
-		}
-
-		this._tablistElement = this.shadowRoot.getElementById('tablist');
-		this._tabElements = this.shadowRoot.getElementById('tab-slot').assignedNodes({flatten: true});
-		this._tabpanelElements = this.shadowRoot.getElementById('tabpanel-slot').assignedNodes({flatten: true});
-
-		this._tabClickEventListener = this._tabClickEvent.bind(this);
-		this._tabKeydownEventListener = this._tabKeydownEvent.bind(this);
-		this._tabpanelKeydownEventListener = this._tabpanelKeydownEvent.bind(this);
-	}
-
-	connectedCallback() {
-		const tablistElement = this._tablistElement;
-		const tabElements = this._tabElements;
-		const tabpanelElements = this._tabpanelElements;
-
-		for (const tabElement of tabElements) {
-			tabElement.tabIndex = 0;
-			tabElement.setAttribute('role', 'tab');
-			tabElement.removeAttribute('href');
-		}
-		for (const tabpanelElement of tabpanelElements) {
-			tabpanelElement.setAttribute('role', 'tabpanel');
-		}
-
-		const tablistLabel = this.getAttribute('tablist-label');
-		if (tablistLabel !== null && tablistLabel !== '') {
-			tablistElement.setAttribute('aria-label', tablistLabel);
-		}
-
-		const storageKey = this.getAttribute('storage-key');
-		this._storageKey = storageKey;
-
-		let selectedTabNo = 0; // 何番目のタブが選択されているか
-		if (storageKey !== null) {
-			try {
-				const initialDisplayTabpanelId = this._mySessionStorage.getItem(storageKey); // 前回選択したタブID
-				if (initialDisplayTabpanelId !== null) {
-					const initialDisplayTabpanelElement = document.getElementById(initialDisplayTabpanelId);
-					if (initialDisplayTabpanelElement === null) {
-						console.error(`Element: #${initialDisplayTabpanelId} can not found.`);
-					} else {
-						selectedTabNo = tabpanelElements.indexOf(initialDisplayTabpanelElement);
-					}
-				}
-			} catch(e) {
-				/* ストレージ無効環境やプライベートブラウジング時 */
-			}
-		}
-		this.selectedIndex = selectedTabNo;
-
-		let tabNo = 0;
-		for (const tabElement of tabElements) {
-			const hrefAttribute = tabElement.href;
-
-			tabElement.id = this._getTabId(tabNo);
-			tabElement.setAttribute('aria-controls', decodeURIComponent(hrefAttribute.substring(hrefAttribute.indexOf('#') + 1)));
-
-			tabNo++;
-
-			tabElement.addEventListener('click', this._tabClickEventListener);
-			tabElement.addEventListener('keydown', this._tabKeydownEventListener);
-		}
-
-		let tabpanelNo = 0;
-		for (const tabpanelElement of tabpanelElements) {
-			tabpanelElement.setAttribute('aria-labelledby', this._getTabId(tabpanelNo));
-
-			tabpanelNo++;
-
-			tabpanelElement.addEventListener('keydown', this._tabpanelKeydownEventListener);
-		}
-	}
-
-	disconnectedCallback() {
-		const tabElements = this._tabElements;
-		const tabpanelElements = this._tabpanelElements;
-
-		for (const tabElement of tabElements) {
-			tabElement.removeEventListener('click', this._tabClickEventListener);
-			tabElement.removeEventListener('keydown', this._tabKeydownEventListener);
-		}
-
-		for (const tabpanelElement of tabpanelElements) {
-			tabpanelElement.removeEventListener('keydown', this._tabpanelKeydownEventListener);
-		}
-	}
-
-	/**
-	 * タブをクリックしたときの処理
-	 *
-	 * @param {Event} ev - Event
-	 */
-	_tabClickEvent(ev) {
-		const tabNo = this._tabElements.indexOf(ev.target);
-		this.selectedIndex = tabNo;
-		this._changeTab(tabNo);
-	}
-
-	/**
-	 * タブをキーボード操作したときの処理
-	 *
-	 * @param {Event} ev - Event
-	 */
-	_tabKeydownEvent(ev) {
-		switch (ev.key) {
-			case 'ArrowLeft':
-			case 'ArrowUp':
-			case 'Left': // IE, Edge
-			case 'Up': { // IE, Edge
-				ev.preventDefault();
-
-				const tabNo = this.selectedIndex < 1 ? this._tabElements.length - 1 : this.selectedIndex - 1;
-				this.selectedIndex = tabNo;
-				this._changeTab(tabNo);
-				break;
-			}
-			case 'ArrowRight':
-			case 'ArrowDown':
-			case 'Right': // IE, Edge
-			case 'Down': { // IE, Edge
-				ev.preventDefault();
-
-				const tabNo = this.selectedIndex >= this._tabElements.length - 1 ? 0 : this.selectedIndex + 1;
-				this.selectedIndex = tabNo;
-				this._changeTab(tabNo);
-				break;
-			}
-			case 'End': {
-				ev.preventDefault();
-
-				const tabNo = this._tabElements.length - 1;
-				this.selectedIndex = tabNo;
-				this._changeTab(tabNo);
-				break;
-			}
-			case 'Home': {
-				ev.preventDefault();
-
-				const tabNo = 0;
-				this.selectedIndex = tabNo;
-				this._changeTab(tabNo);
-				break;
-			}
-		}
-	}
-
-	/**
-	 * タブパネルをキーボード操作したときの処理
-	 *
-	 * @param {Event} ev - Event
-	 */
-	_tabpanelKeydownEvent(ev) {
-		switch (ev.key) {
-			case 'ArrowLeft':
-			case 'ArrowUp':
-			case 'Left': // IE, Edge
-			case 'Up': { // IE, Edge
-				if (ev.ctrlKey) {
-					/* Ctrlキーが同時に押下された場合は、選択中の [role="tab"] な要素にフォーカスを移動する */
-					ev.preventDefault();
-
-					this._tabElements[this.selectedIndex].focus();
-				}
-				break;
-			}
-		}
-	}
-
-	get selectedIndex() {
-		return Number(this.getAttribute('selected-index'));
-	}
-	set selectedIndex(tabNo) {
-		this.setAttribute('selected-index', tabNo);
-
-		let i = 0;
-		for (const tabElement of this._tabElements) {
-			const select = i === tabNo; // 選択されたタブかどうか
-
-			tabElement.tabIndex = select ? 0 : -1;
-			tabElement.setAttribute('aria-selected', select);
-			tabElement.setAttribute('aria-expanded', select);
-
-			this._tabpanelElements[i].setAttribute('aria-hidden', !select);
-
-			i++;
-		}
-	}
-
-	/**
-	 * タブのID文字列を取得する
-	 *
-	 * @param {number} no - タブ番号
-	 *
-	 * @returns {string} ID文字列
-	 */
-	_getTabId(no) {
-		return `tab-${no + 1}`;
-	}
-
-	/**
-	 * タブを切り替える
-	 *
-	 * @param {number} tabNo - 切り替えるタブ番号
-	 */
-	_changeTab(tabNo) {
-		const selectedTabElement = this._tabElements[tabNo];
-		const selectedTabpanelElement = this._tabpanelElements[tabNo];
-
-		/* 当該タブにフォーカスを移す（キーボード操作時のため） */
-		selectedTabElement.focus();
-
-		/* 現在選択中のタブ情報をストレージに保管する */
-		const storageKey = this._storageKey;
-		if (storageKey !== null) {
-			try {
-				this._mySessionStorage.setItem(this._storageKey, selectedTabpanelElement.id);
-			} catch(e) {
-				/* ストレージ無効環境やプライベートブラウジング時 */
-			}
-		}
-	}
+        if (shadow.adoptedStyleSheets !== undefined) {
+            const cssStyleSheet = new CSSStyleSheet();
+            cssStyleSheet.replaceSync(cssString);
+            shadow.adoptedStyleSheets = [cssStyleSheet];
+        }
+        else {
+            /* adoptedStyleSheets 未対応環境 */
+            shadow.innerHTML += `<style>${cssString}</style>`;
+        }
+        __classPrivateFieldSet(this, _tablistElement, this.shadowRoot?.getElementById('tablist'));
+        __classPrivateFieldSet(this, _tabElements, this.shadowRoot?.getElementById('tab-slot').assignedNodes({ flatten: true }));
+        __classPrivateFieldSet(this, _tabpanelElements, this.shadowRoot?.getElementById('tabpanel-slot').assignedNodes({ flatten: true }));
+        __classPrivateFieldSet(this, _tabClickEventListener, this._tabClickEvent.bind(this));
+        __classPrivateFieldSet(this, _tabKeydownEventListener, this._tabKeydownEvent.bind(this));
+        __classPrivateFieldSet(this, _tabpanelKeydownEventListener, this._tabpanelKeydownEvent.bind(this));
+    }
+    static get observedAttributes() {
+        return ['tablist-label', 'storage-key'];
+    }
+    connectedCallback() {
+        const tablistLabel = this.tablistLabel;
+        if (tablistLabel !== null) {
+            __classPrivateFieldGet(this, _tablistElement).setAttribute('aria-label', tablistLabel);
+        }
+        __classPrivateFieldGet(this, _tabElements).forEach((tabElement, index) => {
+            const href = tabElement.href;
+            if (href === '') {
+                throw new Error('Attribute: `href` is not set.');
+            }
+            const hash = new URL(href).hash;
+            if (hash === '') {
+                throw new Error('Attribute: `href` does not contain hash.');
+            }
+            const tabpanelElementId = decodeURIComponent(hash.substring(1));
+            const tabpanelElement = document.getElementById(tabpanelElementId);
+            if (tabpanelElement === null) {
+                throw new Error(`Element: #${tabpanelElementId} can not found.`);
+            }
+            const tabElementId = this._getTabElementId(index);
+            tabElement.removeAttribute('href');
+            tabElement.id = tabElementId;
+            tabElement.setAttribute('role', 'tab');
+            tabElement.setAttribute('aria-controls', tabpanelElementId);
+            tabpanelElement.setAttribute('role', 'tabpanel');
+            tabpanelElement.setAttribute('aria-labelledby', tabElementId);
+            tabElement.addEventListener('click', __classPrivateFieldGet(this, _tabClickEventListener), { passive: true });
+            tabElement.addEventListener('keydown', __classPrivateFieldGet(this, _tabKeydownEventListener));
+            tabpanelElement.addEventListener('keydown', __classPrivateFieldGet(this, _tabpanelKeydownEventListener));
+        });
+        if (__classPrivateFieldGet(this, _mySessionStorage) !== null) {
+            const storageKey = this.storageKey;
+            if (storageKey !== null) {
+                const initialSelectTabpanelId = __classPrivateFieldGet(this, _mySessionStorage).getItem(storageKey); // 前回選択したタブ ID
+                if (initialSelectTabpanelId !== null) {
+                    const initialSelectTabpanelElement = document.getElementById(initialSelectTabpanelId);
+                    if (initialSelectTabpanelElement === null) {
+                        console.info(`Element: #${initialSelectTabpanelId} can not found.`);
+                    }
+                    else {
+                        __classPrivateFieldSet(this, _selectedTabNo, __classPrivateFieldGet(this, _tabpanelElements).indexOf(initialSelectTabpanelElement));
+                    }
+                }
+            }
+        }
+        this._selectTab(__classPrivateFieldGet(this, _selectedTabNo));
+    }
+    disconnectedCallback() {
+        for (const tabElement of __classPrivateFieldGet(this, _tabElements)) {
+            tabElement.removeEventListener('click', __classPrivateFieldGet(this, _tabClickEventListener));
+            tabElement.removeEventListener('keydown', __classPrivateFieldGet(this, _tabKeydownEventListener));
+        }
+        for (const tabpanelElement of __classPrivateFieldGet(this, _tabpanelElements)) {
+            tabpanelElement.removeEventListener('keydown', __classPrivateFieldGet(this, _tabpanelKeydownEventListener));
+        }
+    }
+    attributeChangedCallback(name, _oldValue, newValue) {
+        switch (name) {
+            case 'tablist-label': {
+                __classPrivateFieldGet(this, _tablistElement).setAttribute('aria-label', newValue);
+                break;
+            }
+            case 'storage-key': {
+                break;
+            }
+        }
+    }
+    get tablistLabel() {
+        return this.getAttribute('tablist-label');
+    }
+    set tablistLabel(value) {
+        if (value === null) {
+            this.removeAttribute('tablist-label');
+            return;
+        }
+        if (typeof value !== 'string') {
+            throw new TypeError(`Only a string value can be specified for the \`tablist-label\` attribute of the <${this.localName}> element.`);
+        }
+        this.setAttribute('tablist-label', value);
+    }
+    get storageKey() {
+        return this.getAttribute('storage-key');
+    }
+    set storageKey(value) {
+        if (value === null) {
+            this.removeAttribute('storage-key');
+            return;
+        }
+        if (typeof value !== 'string') {
+            throw new TypeError(`Only a string value can be specified for the \`storage-key\` attribute of the <${this.localName}> element.`);
+        }
+        this.setAttribute('storage-key', value);
+    }
+    /**
+     * タブの ID 文字列を取得する
+     *
+     * @param {number} index - 何番目のタブか
+     *
+     * @returns {string} ID 文字列
+     */
+    _getTabElementId(index) {
+        return `tab-${String(index + 1)}`;
+    }
+    /**
+     * タブをクリックしたときの処理
+     *
+     * @param {MouseEvent} ev - Event
+     */
+    _tabClickEvent(ev) {
+        this._changeTab(__classPrivateFieldGet(this, _tabElements).indexOf(ev.target));
+    }
+    /**
+     * タブをキーボード操作したときの処理
+     *
+     * @param {KeyboardEvent} ev - Event
+     */
+    _tabKeydownEvent(ev) {
+        switch (ev.key) {
+            case 'ArrowLeft':
+            case 'ArrowUp': {
+                ev.preventDefault();
+                this._changeTab(__classPrivateFieldGet(this, _selectedTabNo) < 1 ? __classPrivateFieldGet(this, _tabElements).length - 1 : __classPrivateFieldGet(this, _selectedTabNo) - 1);
+                break;
+            }
+            case 'ArrowRight':
+            case 'ArrowDown': {
+                ev.preventDefault();
+                this._changeTab(__classPrivateFieldGet(this, _selectedTabNo) >= __classPrivateFieldGet(this, _tabElements).length - 1 ? 0 : __classPrivateFieldGet(this, _selectedTabNo) + 1);
+                break;
+            }
+            case 'End': {
+                ev.preventDefault();
+                this._changeTab(__classPrivateFieldGet(this, _tabElements).length - 1);
+                break;
+            }
+            case 'Home': {
+                ev.preventDefault();
+                this._changeTab(0);
+                break;
+            }
+        }
+    }
+    /**
+     * タブパネルをキーボード操作したときの処理
+     *
+     * @param {KeyboardEvent} ev - Event
+     */
+    _tabpanelKeydownEvent(ev) {
+        switch (ev.key) {
+            case 'ArrowLeft':
+            case 'ArrowUp': {
+                if (ev.ctrlKey) {
+                    /* Ctrl キーが同時に押下された場合は、選択中の [role="tab"] な要素にフォーカスを移動する */
+                    ev.preventDefault();
+                    __classPrivateFieldGet(this, _tabElements)[__classPrivateFieldGet(this, _selectedTabNo)].focus();
+                }
+                break;
+            }
+        }
+    }
+    /**
+     * タブを選択する
+     *
+     * @param {number} tabNo - 選択するタブ番号
+     */
+    _selectTab(tabNo) {
+        __classPrivateFieldGet(this, _tabElements).forEach((tabElement, index) => {
+            const select = index === tabNo; // 選択されたタブかどうか
+            tabElement.setAttribute('aria-selected', String(select));
+            tabElement.setAttribute('aria-expanded', String(select));
+            if (select) {
+                tabElement.tabIndex = 0;
+                tabElement.focus();
+            }
+            else {
+                tabElement.tabIndex = -1;
+            }
+            __classPrivateFieldGet(this, _tabpanelElements)[index].setAttribute('aria-hidden', String(!select));
+        });
+        __classPrivateFieldSet(this, _selectedTabNo, tabNo);
+    }
+    /**
+     * ユーザー操作によりタブを切り替える
+     *
+     * @param {number} tabNo - 切り替えるタブ番号
+     */
+    _changeTab(tabNo) {
+        this._selectTab(tabNo);
+        /* 現在選択中のタブ情報をストレージに保管する */
+        if (__classPrivateFieldGet(this, _mySessionStorage) !== null && this.storageKey !== null) {
+            __classPrivateFieldGet(this, _mySessionStorage).setItem(this.storageKey, __classPrivateFieldGet(this, _tabpanelElements)[tabNo].id);
+        }
+    }
 }
+_mySessionStorage = new WeakMap(), _tablistElement = new WeakMap(), _tabElements = new WeakMap(), _tabpanelElements = new WeakMap(), _selectedTabNo = new WeakMap(), _tabClickEventListener = new WeakMap(), _tabKeydownEventListener = new WeakMap(), _tabpanelKeydownEventListener = new WeakMap();
