@@ -25,7 +25,7 @@ var _mySessionStorage, _tablistElement, _tabElements, _tabpanelElements, _select
  *   <div slot="tabpanel" id="tabpanel2">Tab panel 2</div>
  * </x-tab>
  *
- * @version 1.4.0
+ * @version 1.4.1
  */
 export default class Tab extends HTMLElement {
     constructor() {
@@ -254,15 +254,9 @@ export default class Tab extends HTMLElement {
     _selectTab(tabNo) {
         __classPrivateFieldGet(this, _tabElements).forEach((tabElement, index) => {
             const select = index === tabNo; // 選択されたタブかどうか
+            tabElement.tabIndex = select ? 0 : -1;
             tabElement.setAttribute('aria-selected', String(select));
             tabElement.setAttribute('aria-expanded', String(select));
-            if (select) {
-                tabElement.tabIndex = 0;
-                tabElement.focus();
-            }
-            else {
-                tabElement.tabIndex = -1;
-            }
             __classPrivateFieldGet(this, _tabpanelElements)[index].setAttribute('aria-hidden', String(!select));
         });
         __classPrivateFieldSet(this, _selectedTabNo, tabNo);
@@ -274,6 +268,7 @@ export default class Tab extends HTMLElement {
      */
     _changeTab(tabNo) {
         this._selectTab(tabNo);
+        __classPrivateFieldGet(this, _tabElements)[tabNo].focus();
         /* 現在選択中のタブ情報をストレージに保管する */
         if (__classPrivateFieldGet(this, _mySessionStorage) !== null && this.storageKey !== null) {
             __classPrivateFieldGet(this, _mySessionStorage).setItem(this.storageKey, __classPrivateFieldGet(this, _tabpanelElements)[tabNo].id);

@@ -11,7 +11,7 @@
  *   <div slot="tabpanel" id="tabpanel2">Tab panel 2</div>
  * </x-tab>
  *
- * @version 1.4.0
+ * @version 1.4.1
  */
 export default class Tab extends HTMLElement {
 	#mySessionStorage: Storage | null = null;
@@ -285,14 +285,9 @@ export default class Tab extends HTMLElement {
 		this.#tabElements.forEach((tabElement, index) => {
 			const select = index === tabNo; // 選択されたタブかどうか
 
+			tabElement.tabIndex = select ? 0 : -1;
 			tabElement.setAttribute('aria-selected', String(select));
 			tabElement.setAttribute('aria-expanded', String(select));
-			if (select) {
-				tabElement.tabIndex = 0;
-				tabElement.focus();
-			} else {
-				tabElement.tabIndex = -1;
-			}
 
 			this.#tabpanelElements[index].setAttribute('aria-hidden', String(!select));
 		});
@@ -307,6 +302,8 @@ export default class Tab extends HTMLElement {
 	 */
 	private _changeTab(tabNo: number): void {
 		this._selectTab(tabNo);
+
+		this.#tabElements[tabNo].focus();
 
 		/* 現在選択中のタブ情報をストレージに保管する */
 		if (this.#mySessionStorage !== null && this.storageKey !== null) {
