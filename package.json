@@ -1,6 +1,6 @@
 {
 	"name": "@saekitominaga/customelements-tab",
-	"version": "1.4.0",
+	"version": "1.4.1",
 	"description": "Implement tab functionality with Custom Elements.",
 	"type": "module",
 	"devDependencies": {
