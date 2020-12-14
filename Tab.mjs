@@ -25,15 +25,15 @@ var _mySessionStorage, _tablistElement, _tabElements, _tabpanelElements, _select
  *   <div slot="tabpanel" id="tabpanel2">Tab panel 2</div>
  * </x-tab>
  *
- * @version 1.4.1
+ * @version 1.4.2
  */
 export default class Tab extends HTMLElement {
     constructor() {
         super();
         _mySessionStorage.set(this, null);
         _tablistElement.set(this, void 0);
-        _tabElements.set(this, void 0);
-        _tabpanelElements.set(this, void 0);
+        _tabElements.set(this, []);
+        _tabpanelElements.set(this, []);
         _selectedTabNo.set(this, 0); // 何番目のタブが選択されているか
         _tabClickEventListener.set(this, void 0);
         _tabKeydownEventListener.set(this, void 0);
@@ -77,8 +77,6 @@ export default class Tab extends HTMLElement {
             shadow.innerHTML += `<style>${cssString}</style>`;
         }
         __classPrivateFieldSet(this, _tablistElement, this.shadowRoot?.getElementById('tablist'));
-        __classPrivateFieldSet(this, _tabElements, this.shadowRoot?.getElementById('tab-slot').assignedNodes({ flatten: true }));
-        __classPrivateFieldSet(this, _tabpanelElements, this.shadowRoot?.getElementById('tabpanel-slot').assignedNodes({ flatten: true }));
         __classPrivateFieldSet(this, _tabClickEventListener, this._tabClickEvent.bind(this));
         __classPrivateFieldSet(this, _tabKeydownEventListener, this._tabKeydownEvent.bind(this));
         __classPrivateFieldSet(this, _tabpanelKeydownEventListener, this._tabpanelKeydownEvent.bind(this));
@@ -87,6 +85,8 @@ export default class Tab extends HTMLElement {
         return ['tablist-label', 'storage-key'];
     }
     connectedCallback() {
+        __classPrivateFieldSet(this, _tabElements, this.shadowRoot?.getElementById('tab-slot').assignedNodes({ flatten: true }));
+        __classPrivateFieldSet(this, _tabpanelElements, this.shadowRoot?.getElementById('tabpanel-slot').assignedNodes({ flatten: true }));
         const tablistLabel = this.tablistLabel;
         if (tablistLabel !== null) {
             __classPrivateFieldGet(this, _tablistElement).setAttribute('aria-label', tablistLabel);

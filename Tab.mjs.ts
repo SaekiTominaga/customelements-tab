@@ -11,14 +11,14 @@
  *   <div slot="tabpanel" id="tabpanel2">Tab panel 2</div>
  * </x-tab>
  *
- * @version 1.4.1
+ * @version 1.4.2
  */
 export default class Tab extends HTMLElement {
 	#mySessionStorage: Storage | null = null;
 
 	#tablistElement: HTMLElement;
-	#tabElements: HTMLAnchorElement[];
-	#tabpanelElements: HTMLElement[];
+	#tabElements: HTMLAnchorElement[] = [];
+	#tabpanelElements: HTMLElement[] = [];
 
 	#selectedTabNo = 0; // 何番目のタブが選択されているか
 
@@ -75,8 +75,6 @@ export default class Tab extends HTMLElement {
 		}
 
 		this.#tablistElement = <HTMLElement>this.shadowRoot?.getElementById('tablist');
-		this.#tabElements = <HTMLAnchorElement[]>(<HTMLSlotElement>this.shadowRoot?.getElementById('tab-slot')).assignedNodes({ flatten: true });
-		this.#tabpanelElements = <HTMLElement[]>(<HTMLSlotElement>this.shadowRoot?.getElementById('tabpanel-slot')).assignedNodes({ flatten: true });
 
 		this.#tabClickEventListener = this._tabClickEvent.bind(this);
 		this.#tabKeydownEventListener = this._tabKeydownEvent.bind(this);
@@ -84,6 +82,9 @@ export default class Tab extends HTMLElement {
 	}
 
 	connectedCallback(): void {
+		this.#tabElements = <HTMLAnchorElement[]>(<HTMLSlotElement>this.shadowRoot?.getElementById('tab-slot')).assignedNodes({ flatten: true });
+		this.#tabpanelElements = <HTMLElement[]>(<HTMLSlotElement>this.shadowRoot?.getElementById('tabpanel-slot')).assignedNodes({ flatten: true });
+
 		const tablistLabel = this.tablistLabel;
 		if (tablistLabel !== null) {
 			this.#tablistElement.setAttribute('aria-label', tablistLabel);
