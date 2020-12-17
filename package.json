@@ -20,6 +20,7 @@
 		"ts-watch": "run-p _ts-watch:*"
 	},
 	"main": "Tab.mjs",
+	"types": "Tab.mjs.d.ts",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/SaekiTominaga/customelements-tab.git"
