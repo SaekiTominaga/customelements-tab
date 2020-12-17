@@ -25,7 +25,7 @@ var _mySessionStorage, _tablistElement, _tabElements, _tabpanelElements, _select
  *   <div slot="tabpanel" id="tabpanel2">Tab panel 2</div>
  * </x-tab>
  *
- * @version 1.4.2
+ * @version 1.4.3
  */
 export default class Tab extends HTMLElement {
     constructor() {
@@ -195,7 +195,7 @@ export default class Tab extends HTMLElement {
      * @param {MouseEvent} ev - Event
      */
     _tabClickEvent(ev) {
-        this._changeTab(__classPrivateFieldGet(this, _tabElements).indexOf(ev.target));
+        this._changeTab(__classPrivateFieldGet(this, _tabElements).indexOf(ev.currentTarget));
     }
     /**
      * タブをキーボード操作したときの処理

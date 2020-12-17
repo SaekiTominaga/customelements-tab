@@ -11,7 +11,7 @@
  *   <div slot="tabpanel" id="tabpanel2">Tab panel 2</div>
  * </x-tab>
  *
- * @version 1.4.2
+ * @version 1.4.3
  */
 export default class Tab extends HTMLElement {
     #private;

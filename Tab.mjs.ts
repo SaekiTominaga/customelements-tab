@@ -11,7 +11,7 @@
  *   <div slot="tabpanel" id="tabpanel2">Tab panel 2</div>
  * </x-tab>
  *
- * @version 1.4.2
+ * @version 1.4.3
  */
 export default class Tab extends HTMLElement {
 	#mySessionStorage: Storage | null = null;
@@ -213,7 +213,7 @@ export default class Tab extends HTMLElement {
 	 * @param {MouseEvent} ev - Event
 	 */
 	private _tabClickEvent(ev: MouseEvent): void {
-		this._changeTab(this.#tabElements.indexOf(<HTMLAnchorElement>ev.target));
+		this._changeTab(this.#tabElements.indexOf(<HTMLAnchorElement>ev.currentTarget));
 	}
 
 	/**
