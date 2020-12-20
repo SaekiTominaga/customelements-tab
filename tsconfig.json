@@ -3,6 +3,7 @@
 		/* Project Options */
 		"incremental": true,
 		"module": "ES2020",
+		"outDir": "dist/",
 		"target": "ES2020",
 
 		/* Strict Checks */
@@ -23,5 +24,5 @@
 		"forceConsistentCasingInFileNames": true,
 		"newLine": "LF"
 	},
-	"include": ["Tab.mjs.ts", "@types/*.ts"]
+	"include": ["src/**/*.ts", "@types/*.ts"]
 }
