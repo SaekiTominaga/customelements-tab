@@ -4,12 +4,6 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<title>&lt;w0s-tab&gt; Sample</title>
 		<style>
-			.source {
-				margin: 1em 0 2em;
-				padding: 1em;
-				border: 1px solid #999;
-			}
-
 			w0s-tab {
 				--tab-border-color: #ccc;
 				--tab-border-width: 1px;
@@ -52,7 +46,7 @@
 			}
 		</style>
 		<script type="module">
-			import Tab from './Tab.mjs';
+			import Tab from './dist/Tab.mjs';
 
 			customElements.define('w0s-tab', Tab);
 
@@ -77,11 +71,6 @@
 	</head>
 	<body>
 		<h1>&lt;w0s-tab&gt; Sample</h1>
-
-		<p class="source">
-			Source code: <a href="https://github.com/SaekiTominaga/customelements-tab/blob/main/Tab.mjs.ts">src (TypeScript)</a>,
-			<a href="https://github.com/SaekiTominaga/customelements-tab/blob/main/Tab.mjs">dist (JavaScript)</a>
-		</p>
 
 		<p>
 			<small
