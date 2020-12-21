@@ -7,6 +7,7 @@
 		"@typescript-eslint/eslint-plugin": "^4.10.0",
 		"@typescript-eslint/parser": "^4.10.0",
 		"brotlin": "^1.1.0",
+		"cpy-cli": "^3.1.1",
 		"eslint": "^7.16.0",
 		"eslint-config-prettier": "^7.1.0",
 		"eslint-plugin-jsdoc": "^30.7.9",
@@ -24,6 +25,7 @@
 		"_ts-watch:compress": "onchange -f add -f change -v dist/Tab.mjs -- brotlin compress dist/Tab.mjs -m 1",
 		"_ts-watch:minify": "onchange -f add -f change -v dist/Tab.mjs -- terser dist/Tab.mjs -o dist/Tab.min.mjs -c ecma=2020 --mangle --ecma 2020 --module --source-map base=dist,filename=Tab.min.mjs,includeSources",
 		"_ts-watch:compress-minify": "onchange -f add -f change -v dist/Tab.min.mjs -- brotlin compress dist/Tab.min.mjs -m 1",
+		"_ts-watch:dts-minify": "onchange -f add -f change -v dist/Tab.mjs.d.ts -- cpy dist/Tab.mjs.d.ts dist --rename=Tab.min.mjs.d.ts",
 		"ts-watch": "run-p _ts-watch:*"
 	},
 	"repository": {
