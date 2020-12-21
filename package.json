@@ -19,7 +19,7 @@
 	"main": "dist/Tab.mjs",
 	"types": "dist/Tab.mjs.d.ts",
 	"scripts": {
-		"_ts-watch:tsc": "tsc -d -w",
+		"_ts-watch:tsc": "tsc -w",
 		"_ts-watch:rename": "onchange -f add -v dist/**/*.mjs.js -- renamer --force --find .mjs.js --replace .mjs dist/**/*",
 		"_ts-watch:compress": "onchange -f add -f change -v dist/Tab.mjs -- brotlin compress dist/Tab.mjs -m 1",
 		"_ts-watch:minify": "onchange -f add -f change -v dist/Tab.mjs -- terser dist/Tab.mjs -o dist/Tab.min.mjs -c ecma=2020 --mangle --ecma 2020 --module --source-map base=dist,filename=Tab.min.mjs,includeSources",

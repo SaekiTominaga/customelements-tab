@@ -1,6 +1,8 @@
 {
 	"compilerOptions": {
 		/* Project Options */
+		"declaration": true,
+		"declarationMap": true,
 		"incremental": true,
 		"module": "ES2020",
 		"outDir": "dist/",

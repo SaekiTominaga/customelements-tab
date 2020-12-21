@@ -63,3 +63,4 @@ export default class Tab extends HTMLElement {
      */
     private _changeTab;
 }
+//# sourceMappingURL=Tab.mjs.d.ts.map
