@@ -1,17 +1,7 @@
 /**
  * Tab
  *
- * @example
- * <x-tab
- *   tablist-label="[Optional] Label string to set in [role=tablist]. (set as the `aria-label` attribute value)"
- *   storage-key="[Optional] When a tab is selected, its value is saved as the `sessionStorage`.">
- *   <a href="#tabpanel1" slot="tab">Tab 1</a>
- *   <a href="#tabpanel2" slot="tab">Tab 2</a>
- *   <div slot="tabpanel" id="tabpanel1">Tab panel 1</div>
- *   <div slot="tabpanel" id="tabpanel2">Tab panel 2</div>
- * </x-tab>
- *
- * @version 1.4.3
+ * @version 1.5.0
  */
 export default class Tab extends HTMLElement {
     #private;
@@ -63,4 +53,4 @@ export default class Tab extends HTMLElement {
      */
     private _changeTab;
 }
-//# sourceMappingURL=Tab.mjs.d.ts.map
+//# sourceMappingURL=Tab.esm.d.ts.map

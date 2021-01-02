@@ -8,6 +8,19 @@ Implement tabs UI component by Custom Elements.
 
 - [Demo page](https://saekitominaga.github.io/customelements-tab/demo.html)
 
+## Examples
+
+```
+<x-tab
+  tablist-label="Tab label"
+  storage-key="tab1">
+  <a href="#tabpanel1" slot="tab">Tab 1</a>
+  <a href="#tabpanel2" slot="tab">Tab 2</a>
+  <div slot="tabpanel" id="tabpanel1">Tab panel 1</div>
+  <div slot="tabpanel" id="tabpanel2">Tab panel 2</div>
+</x-tab>
+```
+
 ## Attributes
 
 <dl>
