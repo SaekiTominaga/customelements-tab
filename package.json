@@ -1,6 +1,6 @@
 {
 	"name": "@saekitominaga/customelements-tab",
-	"version": "1.5.0",
+	"version": "1.6.0",
 	"description": "Implement tabs UI component by Custom Elements.",
 	"keywords": [
 		"web-components",
