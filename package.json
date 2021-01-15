@@ -2,7 +2,36 @@
 	"name": "@saekitominaga/customelements-tab",
 	"version": "1.5.0",
 	"description": "Implement tabs UI component by Custom Elements.",
+	"keywords": [
+		"web-components",
+		"custom-elements",
+		"tab"
+	],
+	"homepage": "https://github.com/SaekiTominaga/customelements-tab#readme",
+	"bugs": {
+		"url": "https://github.com/SaekiTominaga/customelements-tab/issues"
+	},
+	"license": "MIT",
+	"author": "Saeki Tominaga",
+	"files": [
+		"dist",
+		"src"
+	],
 	"type": "module",
+	"browser": "dist/Tab.js",
+	"types": "dist/Tab.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/SaekiTominaga/customelements-tab.git"
+	},
+	"scripts": {
+		"_build:tsc": "tsc -w",
+		"_build:compress": "onchange -f add -f change -v dist/Tab.js -- brotlin compress dist/Tab.js -m 1",
+		"_build:minify": "onchange -f add -f change -v dist/Tab.js -- terser dist/Tab.js -o dist/Tab.min.js -c ecma=2020 --mangle --ecma 2020 --module --source-map content='dist/Tab.js.map',filename='Tab.js',includeSources,url='Tab.min.js.map'",
+		"_build:minify-compress": "onchange -f add -f change -v dist/Tab.min.js -- brotlin compress dist/Tab.min.js -m 1",
+		"_build:minify-declaration": "onchange -f add -f change -v dist/Tab.d.ts -- cpy dist/Tab.d.ts dist --rename=Tab.min.d.ts",
+		"build": "run-p _build:*"
+	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^4.11.1",
 		"@typescript-eslint/parser": "^4.11.1",
@@ -16,31 +45,6 @@
 		"terser": "^5.5.1",
 		"typescript": "^4.1.3"
 	},
-	"main": "dist/Tab.esm.js",
-	"types": "dist/Tab.esm.d.ts",
-	"scripts": {
-		"_ts-watch:tsc": "tsc -w",
-		"_ts-watch:compress": "onchange -f add -f change -v dist/Tab.esm.js -- brotlin compress dist/Tab.esm.js -m 1",
-		"_ts-watch:minify": "onchange -f add -f change -v dist/Tab.esm.js -- terser dist/Tab.esm.js -o dist/Tab.min.esm.js -c ecma=2020 --mangle --ecma 2020 --module --source-map base=dist,filename=Tab.esm.js,includeSources",
-		"_ts-watch:compress-minify": "onchange -f add -f change -v dist/Tab.min.esm.js -- brotlin compress dist/Tab.min.esm.js -m 1",
-		"_ts-watch:dts-minify": "onchange -f add -f change -v dist/Tab.esm.d.ts -- cpy dist/Tab.esm.d.ts dist --rename=Tab.min.esm.d.ts",
-		"ts-watch": "run-p _ts-watch:*"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/SaekiTominaga/customelements-tab.git"
-	},
-	"keywords": [
-		"web-components",
-		"custom-elements",
-		"tab"
-	],
-	"author": "Saeki Tominaga",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/SaekiTominaga/customelements-tab/issues"
-	},
-	"homepage": "https://github.com/SaekiTominaga/customelements-tab#readme",
 	"publishConfig": {
 		"access": "public"
 	}

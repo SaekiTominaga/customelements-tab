@@ -266,3 +266,4 @@ export default class Tab extends HTMLElement {
     }
 }
 _mySessionStorage = new WeakMap(), _tablistElement = new WeakMap(), _tabElements = new WeakMap(), _tabpanelElements = new WeakMap(), _selectedTabNo = new WeakMap(), _tabClickEventListener = new WeakMap(), _tabKeydownEventListener = new WeakMap(), _tabpanelKeydownEventListener = new WeakMap();
+//# sourceMappingURL=Tab.js.map

@@ -53,4 +53,4 @@ export default class Tab extends HTMLElement {
      */
     private _changeTab;
 }
-//# sourceMappingURL=Tab.esm.d.ts.map
+//# sourceMappingURL=Tab.d.ts.map
