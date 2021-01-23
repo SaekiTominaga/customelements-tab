@@ -10,10 +10,11 @@ Implement tabs UI component by Custom Elements.
 
 ## Examples
 
-```
+```HTML
 <x-tab
   tablist-label="Tab label"
-  storage-key="tab1">
+  storage-key="tab1"
+>
   <a href="#tabpanel1" slot="tab">Tab 1</a>
   <a href="#tabpanel2" slot="tab">Tab 2</a>
   <div slot="tabpanel" id="tabpanel1">Tab panel 1</div>
