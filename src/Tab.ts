@@ -1,7 +1,5 @@
 /**
  * Tab
- *
- * @version 1.5.0
  */
 export default class Tab extends HTMLElement {
 	#mySessionStorage: Storage | null = null;

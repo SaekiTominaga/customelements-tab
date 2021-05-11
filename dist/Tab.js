@@ -14,8 +14,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _mySessionStorage, _tablistElement, _tabElements, _tabpanelElements, _selectedTabNo, _tabClickEventListener, _tabKeydownEventListener, _tabpanelKeydownEventListener;
 /**
  * Tab
- *
- * @version 1.5.0
  */
 export default class Tab extends HTMLElement {
     constructor() {
