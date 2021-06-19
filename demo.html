@@ -52,17 +52,17 @@
 
 			const tabElement = document.createElement('x-tab');
 			const tab = `
-  <a href="#tabpanel2-1" slot="tab">Tab 2-1</a>
-  <a href="#tabpanel2-2" slot="tab">Tab 2-2</a>
-  <a href="#tabpanel2-3" slot="tab">Tab 2-3</a>
-  <div slot="tabpanel" id="tabpanel2-1">
-    Contents of tabpanel 2-1 <button type="button">Button</button>
+  <a href="#tabpanel4-1" slot="tab">Tab 4-1</a>
+  <a href="#tabpanel4-2" slot="tab">Tab 4-2</a>
+  <a href="#tabpanel4-3" slot="tab">Tab 4-3</a>
+  <div slot="tabpanel" id="tabpanel4-1">
+    Contents of tabpanel 4-1 <button type="button">Button</button>
   </div>
-  <div slot="tabpanel" id="tabpanel2-2">
-    Contents of tabpanel 2-2 <button type="button">Button</button>
+  <div slot="tabpanel" id="tabpanel4-2">
+    Contents of tabpanel 4-2 <button type="button">Button</button>
   </div>
-  <div slot="tabpanel" id="tabpanel2-3">
-    Contents of tabpanel 2-3 <button type="button">Button</button>
+  <div slot="tabpanel" id="tabpanel4-3">
+    Contents of tabpanel 4-3 <button type="button">Button</button>
   </div>
 `;
 			tabElement.insertAdjacentHTML('afterbegin', tab);
@@ -111,27 +111,27 @@
 			<h2>`tablist-label` attribute</h2>
 
 			<pre><code>&lt;x-tab tablist-label="Tab label"&gt;
-  &lt;a href="#タブパネル3-1" slot="tab"&gt;Tab 3-1&lt;/a&gt;
-  &lt;a href="#タブパネル3-2" slot="tab"&gt;Tab 3-2&lt;/a&gt;
-  &lt;a href="#タブパネル3-3" slot="tab"&gt;Tab 3-3&lt;/a&gt;
-  &lt;div slot="tabpanel" id="タブパネル3-1"&gt;
-    Contents of tabpanel 3-1 &lt;button type="button"&gt;Button&lt;/button&gt;
+  &lt;a href="#tabpanel2-1" slot="tab"&gt;Tab 2-1&lt;/a&gt;
+  &lt;a href="#tabpanel2-2" slot="tab"&gt;Tab 2-2&lt;/a&gt;
+  &lt;a href="#tabpanel2-3" slot="tab"&gt;Tab 2-3&lt;/a&gt;
+  &lt;div slot="tabpanel" id="tabpanel2-1"&gt;
+    Contents of tabpanel 2-1 &lt;button type="button"&gt;Button&lt;/button&gt;
   &lt;/div&gt;
-  &lt;div slot="tabpanel" id="タブパネル3-2"&gt;
-    Contents of tabpanel 3-2 &lt;button type="button"&gt;Button&lt;/button&gt;
+  &lt;div slot="tabpanel" id="tabpanel2-2"&gt;
+    Contents of tabpanel 2-2 &lt;button type="button"&gt;Button&lt;/button&gt;
   &lt;/div&gt;
-  &lt;div slot="tabpanel" id="タブパネル3-3"&gt;
-    Contents of tabpanel 3-3 &lt;button type="button"&gt;Button&lt;/button&gt;
+  &lt;div slot="tabpanel" id="tabpanel2-3"&gt;
+    Contents of tabpanel 2-3 &lt;button type="button"&gt;Button&lt;/button&gt;
   &lt;/div&gt;
 &lt;/x-tab&gt;</code></pre>
 
 			<x-tab tablist-label="Tab label">
-				<a href="#タブパネル3-1" slot="tab">Tab 3-1</a>
-				<a href="#タブパネル3-2" slot="tab">Tab 3-2</a>
-				<a href="#タブパネル3-3" slot="tab">Tab 3-3</a>
-				<div slot="tabpanel" id="タブパネル3-1">Contents of tabpanel 3-1 <button type="button">Button</button></div>
-				<div slot="tabpanel" id="タブパネル3-2">Contents of tabpanel 3-2 <button type="button">Button</button></div>
-				<div slot="tabpanel" id="タブパネル3-3">Contents of tabpanel 3-3 <button type="button">Button</button></div>
+				<a href="#tabpanel2-1" slot="tab">Tab 2-1</a>
+				<a href="#tabpanel2-2" slot="tab">Tab 2-2</a>
+				<a href="#tabpanel2-3" slot="tab">Tab 2-3</a>
+				<div slot="tabpanel" id="tabpanel2-1">Contents of tabpanel 2-1 <button type="button">Button</button></div>
+				<div slot="tabpanel" id="tabpanel2-2">Contents of tabpanel 2-2 <button type="button">Button</button></div>
+				<div slot="tabpanel" id="tabpanel2-3">Contents of tabpanel 2-3 <button type="button">Button</button></div>
 			</x-tab>
 		</section>
 
@@ -139,27 +139,27 @@
 			<h2>`storage-key` attribute</h2>
 
 			<pre><code>&lt;x-tab storage-key="tab3"&gt;
-  &lt;a href="#%E3%82%BF%E3%83%96%E3%83%91%E3%83%8D%E3%83%AB4-1" slot="tab"&gt;Tab 4-1&lt;/a&gt;
-  &lt;a href="#%E3%82%BF%E3%83%96%E3%83%91%E3%83%8D%E3%83%AB4-2" slot="tab"&gt;Tab 4-2&lt;/a&gt;
-  &lt;a href="#%E3%82%BF%E3%83%96%E3%83%91%E3%83%8D%E3%83%AB4-3" slot="tab"&gt;Tab 4-3&lt;/a&gt;
-  &lt;div slot="tabpanel" id="タブパネル4-1"&gt;
-    Contents of tabpanel 4-1 &lt;button type="button"&gt;Button&lt;/button&gt;
+  &lt;a href="#tabpanel3-1" slot="tab"&gt;Tab 3-1&lt;/a&gt;
+  &lt;a href="#tabpanel3-2" slot="tab"&gt;Tab 3-2&lt;/a&gt;
+  &lt;a href="#tabpanel3-3" slot="tab"&gt;Tab 3-3&lt;/a&gt;
+  &lt;div slot="tabpanel" id="tabpanel3-1"&gt;
+    Contents of tabpanel 3-1 &lt;button type="button"&gt;Button&lt;/button&gt;
   &lt;/div&gt;
-  &lt;div slot="tabpanel" id="タブパネル4-2"&gt;
-    Contents of tabpanel 4-2 &lt;button type="button"&gt;Button&lt;/button&gt;
+  &lt;div slot="tabpanel" id="tabpanel3-2"&gt;
+    Contents of tabpanel 3-2 &lt;button type="button"&gt;Button&lt;/button&gt;
   &lt;/div&gt;
-  &lt;div slot="tabpanel" id="タブパネル4-3"&gt;
-    Contents of tabpanel 4-3 &lt;button type="button"&gt;Button&lt;/button&gt;
+  &lt;div slot="tabpanel" id="tabpanel3-3"&gt;
+    Contents of tabpanel 3-3 &lt;button type="button"&gt;Button&lt;/button&gt;
   &lt;/div&gt;
 &lt;/x-tab&gt;</code></pre>
 
 			<x-tab storage-key="tab">
-				<a href="#%E3%82%BF%E3%83%96%E3%83%91%E3%83%8D%E3%83%AB4-1" slot="tab">Tab 4-1</a>
-				<a href="#%E3%82%BF%E3%83%96%E3%83%91%E3%83%8D%E3%83%AB4-2" slot="tab">Tab 4-2</a>
-				<a href="#%E3%82%BF%E3%83%96%E3%83%91%E3%83%8D%E3%83%AB4-3" slot="tab">Tab 4-3</a>
-				<div slot="tabpanel" id="タブパネル4-1">Contents of tabpanel 4-1 <button type="button">Button</button></div>
-				<div slot="tabpanel" id="タブパネル4-2">Contents of tabpanel 4-2 <button type="button">Button</button></div>
-				<div slot="tabpanel" id="タブパネル4-3">Contents of tabpanel 4-3 <button type="button">Button</button></div>
+				<a href="#tabpanel3-1" slot="tab">Tab 3-1</a>
+				<a href="#tabpanel3-2" slot="tab">Tab 3-2</a>
+				<a href="#tabpanel3-3" slot="tab">Tab 3-3</a>
+				<div slot="tabpanel" id="tabpanel3-1">Contents of tabpanel 3-1 <button type="button">Button</button></div>
+				<div slot="tabpanel" id="tabpanel3-2">Contents of tabpanel 3-2 <button type="button">Button</button></div>
+				<div slot="tabpanel" id="tabpanel3-3">Contents of tabpanel 3-3 <button type="button">Button</button></div>
 			</x-tab>
 		</section>
 
